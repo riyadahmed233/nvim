@@ -10,11 +10,16 @@ return {
     end,
   },
 
+  -- Mini icons
 { 'echasnovski/mini.nvim', version = false },
+
+-- Which Key
 {
   "folke/which-key.nvim",
   event = "VeryLazy",
 },
+
+-- Telescope + Treesitter
 {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
       dependencies = { 'nvim-lua/plenary.nvim' }
@@ -29,4 +34,15 @@ return {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
 },
+
+-- Undo tree
+
+  {
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
+    init = function()
+      require "custom.inits.undotree"
+    end,
+  },
+
 }
