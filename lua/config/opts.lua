@@ -63,3 +63,55 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- Enable auto reload if file changes
+
+vim.opt.autoread = true
+
+-- auto commands to update buffer and notify user of update
+-- vim.api.nvim_create_autocmd(
+--   { 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, -- Events
+--   {
+--     pattern = '*', -- Match all files
+--     callback = function()
+--       if vim.api.nvim_get_mode().mode ~= 'c' then -- Check if the mode is not 'command-line'
+--         vim.cmd 'checktime' -- Update buffer if the file changed outside
+--       end
+--     end,
+--   }
+-- )
+--
+-- vim.api.nvim_create_autocmd('FileChangedShellPost', {
+--   pattern = '*',
+--   callback = function()
+--     vim.api.nvim_echo({ { 'File changed on disk. Buffer reloaded.', 'WarningMsg' } }, false, {})
+--   end,
+-- })
+
+-- Reload buffer on focus-related events
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  pattern = '*',
+  callback = function()
+    if vim.api.nvim_get_mode().mode ~= 'c' then
+      vim.cmd 'checktime'
+    end
+  end,
+})
+
+-- Set up a periodic timer to check for file changes even when terminal focus is lost
+local timer = vim.loop.new_timer()
+timer:start(
+  0,
+  1000,
+  vim.schedule_wrap(function() -- Runs every 5 seconds
+    vim.cmd 'checktime'
+  end)
+)
+
+-- Notify when the buffer is reloaded due to external changes
+vim.api.nvim_create_autocmd('FileChangedShellPost', {
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_echo({ { 'File changed on disk. Buffer reloaded.', 'WarningMsg' } }, false, {})
+  end,
+})

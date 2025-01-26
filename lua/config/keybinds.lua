@@ -7,8 +7,6 @@ function Map(mode, lhs, rhs, description, opts)
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
-vim.g.mapleader = ' '
-
 -- Window Movement
 Map('n', '<leader>wh', '<C-w>h', 'Left window')
 Map('n', '<leader>wj', '<C-w>j', 'Down Window')
@@ -44,11 +42,28 @@ Map('t', '<leader>w<Left>', '<cmd>vertical resize +2<CR>', 'Window size left')
 Map('t', '<leader>w<Right>', '<cmd>vertical resize -2<CR>', 'Window size right')
 
 -- Window splitting
-Map('n', '<leader>w2', ':vsplit<CR><C-w>w', 'Split Vertically')
-Map('n', '<leader>w3', ':split<CR><C-w>w', 'Split Horizontally')
+-- Map('n', '<leader>w2', ':vsplit<CR><C-w>w<CR>', 'Split Vertically')
+-- Map('n', '<leader>w3', ':split<CR><C-w>w<CR>', 'Split Horizontally')
+--
+-- Map('n', '<leader>w2', '<cmd>vsplit<CR><C-w>w<CR>', 'Split Vertically')
+-- Map('n', '<leader>w3', '<cmd>split<CR><C-w>w<CR>', 'Split Horizontally')
 
-Map('n', '<leader>w2', '<cmd>vsplit<CR><C-w>w', 'Split Vertically')
-Map('n', '<leader>w3', '<cmd>split<CR><C-w>w', 'Split Horizontally')
+Map('n', '<leader>w2', ':vsplit<CR>', 'Split Vertically')
+Map('n', '<leader>w3', ':split<CR>', 'Split Horizontally')
+
+Map('n', '<leader>w2', '<cmd>vsplit<CR>', 'Split Vertically')
+Map('n', '<leader>w3', '<cmd>split<CR>', 'Split Horizontally')
+
+-- Tabs
+
+Map('t', '<leader>t2', ':tabnew', 'New Tab')
+Map('t', '<leader>t3', ':tabnew', 'New Tab')
+Map('t', '<leader>tq', ':tabclose', 'Close Tab')
+Map('t', '<leader>tt', ':+tabnext', 'Next Tab')
+Map('t', '<leader>tj', ':+tabnext', 'Next Tab')
+Map('t', '<leader>tk', ':-tabnext', 'Previous Tab')
+Map('t', '<leader>th', ':-tabmove', 'Move Tab Left')
+Map('t', '<leader>tl', ':+tabmove', 'Move Tab Right')
 
 -- Buffer switching
 Map('n', '<leader>b', '', 'Buffer')
@@ -82,7 +97,7 @@ Map('n', '<leader>.', ':Telescope file_browser path=%:p:h select_buffer=true<CR>
 -- Map("n", "<leader>/", builtin.live_grep,"Live Grep")
 Map('n', '<leader>fa', '<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>')
 Map('n', '<leader>fb', builtin.buffers, 'Find Buffers')
-Map('n', '<leader>fg', builtin.live_grep, 'Telescope Live Grep')
+Map('n', '<leader>fg', '<cmd> Telescope current_buffer_fuzzy_find <CR>', 'Telescope Live Grep')
 Map('n', '<leader>fr', builtin.oldfiles, 'Recent Files')
 -- Map("n", "<leader>fc", "<cmd> Telescope colorschemes <CR>", "Colourschemes")
 
@@ -96,6 +111,7 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 -- Config
 Map('n', '<leader>fc', ':Telescope file_browser path=~/.config/nvim select_buffer=true<CR>', 'Open Config Directory')
+Map('n', '<leader>fp', ':Telescope file_browser path=~/Documents/git select_buffer=true<CR>', 'Open Projects Directory')
 
 -- Kickstart.nvim
 
@@ -112,9 +128,3 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
